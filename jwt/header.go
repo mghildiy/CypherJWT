@@ -23,5 +23,5 @@ func (h Header) Encode() (string, error) {
 		return "", err
 	}
 
-	return base64.URLEncoding.EncodeToString(jsonData), nil
+	return base64.RawURLEncoding.EncodeToString(jsonData), nil
 }

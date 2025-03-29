@@ -21,7 +21,7 @@ func Sign(header Header, payload Payload, secret string) (string, error) {
 	data := fmt.Sprintf("%s.%s", encodedHeader, encodedPayload)
 	h := hmac.New(sha256.New, []byte(secret))
 	h.Write([]byte(data))
-	signature := base64.URLEncoding.EncodeToString(h.Sum(nil))
+	signature := base64.RawURLEncoding.EncodeToString(h.Sum(nil))
 
 	return fmt.Sprintf("%s.%s.%s", encodedHeader, encodedPayload, signature), nil
 

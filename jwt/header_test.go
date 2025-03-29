@@ -19,7 +19,7 @@ func TestHeader_Encode(t *testing.T) {
 		t.Fatal("Unexpected empty result")
 	}
 
-	decodedBytes, err := base64.URLEncoding.DecodeString(encodedString)
+	decodedBytes, err := base64.RawURLEncoding.DecodeString(encodedString)
 	if err != nil {
 		t.Errorf("Failed to decode base64 string: %s", err)
 	}

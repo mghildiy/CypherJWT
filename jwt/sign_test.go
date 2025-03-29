@@ -20,7 +20,7 @@ func TestSigning(t *testing.T) {
 		"iss":   "cypherlabs.example.com",
 		"sub":   "user123",
 		"aud":   "myapp",
-		"exp":   1710780000, // UNIX timestamp (e.g., March 18, 2025)
+		"exp":   1710780000,
 		"nbf":   1710776400,
 		"iat":   1710772800,
 		"jti":   "unique-token-id-123",
@@ -63,5 +63,5 @@ func computeHMAC(data, secret string) string {
 	h := hmac.New(sha256.New, []byte(secret))
 	h.Write([]byte(data))
 
-	return base64.URLEncoding.EncodeToString(h.Sum(nil))
+	return base64.RawURLEncoding.EncodeToString(h.Sum(nil))
 }
