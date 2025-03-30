@@ -1,4 +1,4 @@
-package jwt
+package datastructure
 
 import (
 	"encoding/base64"
@@ -6,14 +6,14 @@ import (
 )
 
 type Header struct {
-	Algorithm string `json:"alg"`
-	Type      string `json:"typ"`
+	Algo Algorithm `json:"alg"`
+	Type string    `json:"typ"`
 }
 
-func CreateHeader(alg string) Header {
+func CreateHeader(alg Algorithm) Header {
 	return Header{
-		Algorithm: alg,
-		Type:      "JWT",
+		Algo: alg,
+		Type: "JWT",
 	}
 }
 

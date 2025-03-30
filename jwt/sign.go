@@ -1,13 +1,12 @@
 package jwt
 
 import (
-	"crypto/hmac"
-	"crypto/sha256"
-	"encoding/base64"
+	"CypherJWT/jwt/datastructure"
+	"CypherJWT/jwt/signer"
 	"fmt"
 )
 
-func Sign(header Header, payload Payload, secret string) (string, error) {
+func Sign(signer signer.Signer, header datastructure.Header, payload datastructure.Payload) (string, error) {
 	encodedHeader, err := header.Encode()
 	if err != nil {
 		return "", err
@@ -19,10 +18,10 @@ func Sign(header Header, payload Payload, secret string) (string, error) {
 	}
 
 	data := fmt.Sprintf("%s.%s", encodedHeader, encodedPayload)
-	h := hmac.New(sha256.New, []byte(secret))
-	h.Write([]byte(data))
-	signature := base64.RawURLEncoding.EncodeToString(h.Sum(nil))
+	signature, err := signer.Sign([]byte(data))
+	if err != nil {
+		return "", err
+	}
 
 	return fmt.Sprintf("%s.%s.%s", encodedHeader, encodedPayload, signature), nil
-
 }

@@ -1,4 +1,4 @@
-package jwt
+package datastructure
 
 import (
 	"encoding/base64"
