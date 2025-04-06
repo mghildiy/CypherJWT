@@ -23,7 +23,7 @@ func parsePayload(encodedPayload string) (map[string]interface{}, error) {
 	return claims, nil
 }
 
-func validateClaims(claims map[string]interface{}) (bool, error) {
+func validateClaims(claims map[string]interface{}, expectedIssuer string, expectedAudience string) (bool, error) {
 	currentTime := float64(time.Now().Unix())
 	if exp, ok := claims["exp"].(float64); ok {
 		if exp < currentTime {
@@ -39,6 +39,24 @@ func validateClaims(claims map[string]interface{}) (bool, error) {
 		if iat > currentTime {
 			return false, fmt.Errorf("token issued in the future")
 		}
+	}
+	if iss, ok := claims["iss"].(string); ok {
+		if iss != expectedIssuer {
+			return false, fmt.Errorf("invalid issuer")
+		}
+	}
+	if aud, ok := claims["aud"].(string); ok {
+		if aud != expectedAudience {
+			return false, fmt.Errorf("invalid audience")
+		}
+	}
+	if aud, ok := claims["aud"].(string); ok {
+		if aud != expectedAudience {
+			return false, fmt.Errorf("invalid audience")
+		}
+	}
+	if _, ok := claims["sub"].(string); !ok {
+		return false, fmt.Errorf("subject claim is missing or invalid")
 	}
 
 	return true, nil
