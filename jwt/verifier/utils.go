@@ -5,16 +5,26 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"strings"
 	"time"
 )
 
-func parsePayload(encodedPayload string) (map[string]interface{}, error) {
+func extractParts(token string) ([]string, error) {
+	parts := strings.Split(token, ".")
+	if len(parts) != 3 {
+		return nil, fmt.Errorf("token don't have 3 parts")
+	}
+
+	return parts, nil
+}
+
+func parsePayload(encodedPayload string) (map[string]any, error) {
 	decodedBytes, err := base64.RawURLEncoding.DecodeString(encodedPayload)
 	if err != nil {
 		return nil, err
 	}
 
-	claims := map[string]interface{}{}
+	claims := map[string]any{}
 	err = json.Unmarshal(decodedBytes, &claims)
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse payload: %w", err)
@@ -23,7 +33,7 @@ func parsePayload(encodedPayload string) (map[string]interface{}, error) {
 	return claims, nil
 }
 
-func validateClaims(claims map[string]interface{}, expectedIssuer string, expectedAudience string) (bool, error) {
+func validateClaims(claims map[string]any, expectedIssuer string, expectedAudience string) (bool, error) {
 	currentTime := float64(time.Now().Unix())
 	if exp, ok := claims["exp"].(float64); ok {
 		if exp < currentTime {
@@ -43,11 +53,6 @@ func validateClaims(claims map[string]interface{}, expectedIssuer string, expect
 	if iss, ok := claims["iss"].(string); ok {
 		if iss != expectedIssuer {
 			return false, fmt.Errorf("invalid issuer")
-		}
-	}
-	if aud, ok := claims["aud"].(string); ok {
-		if aud != expectedAudience {
-			return false, fmt.Errorf("invalid audience")
 		}
 	}
 	if aud, ok := claims["aud"].(string); ok {

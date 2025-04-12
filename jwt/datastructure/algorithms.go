@@ -8,6 +8,6 @@ const (
 	ES256 Algorithm = "ES256"
 )
 
-func (algo Algorithm) isValid() bool {
+func (algo Algorithm) IsValid() bool {
 	return algo == HS256 || algo == RS256 || algo == ES256
 }

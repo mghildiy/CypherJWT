@@ -2,6 +2,8 @@ package jwt
 
 import (
 	"CypherJWT/jwt/datastructure"
+	"CypherJWT/jwt/keymanager"
+	"CypherJWT/jwt/signer"
 	"crypto"
 	"crypto/hmac"
 	"crypto/rand"
@@ -49,11 +51,11 @@ func TestRSASigning(t *testing.T) {
 	// prepare test data
 	header := createHeader(datastructure.RS256)
 	payload := createPayload()
-	keyManager, err := CreateKeyManager(datastructure.INMEMORY)
+	keyManager, err := keymanager.CreateKeyManager(datastructure.INMEMORY)
 	if err != nil {
 		t.Fatalf("Error creating key manager: %s", err)
 	}
-	rsaSigner, err := CreateSigner(datastructure.RS256, keyManager)
+	rsaSigner, err := signer.CreateSigner(datastructure.RS256, keyManager)
 	if err != nil {
 		t.Fatalf("Error creating RSASigner: %s", err)
 	}
@@ -87,11 +89,11 @@ func TestHMACSigning(t *testing.T) {
 	// prepare test data
 	header := createHeader(datastructure.HS256)
 	payload := createPayload()
-	keyManager, err := CreateKeyManager(datastructure.INMEMORY)
+	keyManager, err := keymanager.CreateKeyManager(datastructure.INMEMORY)
 	if err != nil {
 		t.Fatalf("Error creating key manager: %v", err)
 	}
-	hmacSigner, err := CreateSigner(datastructure.HS256, keyManager)
+	hmacSigner, err := signer.CreateSigner(datastructure.HS256, keyManager)
 	if err != nil {
 		t.Fatalf("Error creating HMACSigner: %s", err)
 	}
