@@ -14,6 +14,6 @@ func CreateSigner(algo datastructure.Algorithm, keymanager keymanager.KeyManager
 	case datastructure.RS256:
 		return signer.NewRSASigner(keymanager), nil
 	default:
-		return nil, fmt.Errorf("Unsupported algorithm: %s", algo)
+		return nil, fmt.Errorf("unsupported algorithm: %s", algo)
 	}
 }

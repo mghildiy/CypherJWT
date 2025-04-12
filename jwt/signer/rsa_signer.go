@@ -40,7 +40,7 @@ func (signer *RSASigner) Sign(data []byte) (string, error) {
 		return "", err
 	}
 
-	return base64.StdEncoding.EncodeToString(signature), nil
+	return base64.RawURLEncoding.EncodeToString(signature), nil
 }
 
 var _ Signer = (*RSASigner)(nil)
