@@ -1,7 +1,7 @@
 package verifier
 
 import (
-	"CypherJWT/jwt/keyManager"
+	"CypherJWT/jwt/keymanager"
 	"CypherJWT/jwt/signer"
 	"crypto/hmac"
 	"fmt"
